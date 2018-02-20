@@ -1,32 +1,45 @@
 package fr.ul.cassebrique.Models;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import fr.ul.cassebrique.Models.brick.BlueBrick;
+import fr.ul.cassebrique.Models.brick.Brick;
+import fr.ul.cassebrique.Models.brick.EmptyBrick;
+import fr.ul.cassebrique.Models.brick.GreenBrick;
 
 public class Wall {
 
     private int nbL; //nombre de lignes
     private int nbC; //nombre de colones
+    private GameWorld gw;
 
-    private Brick wall[][];
+    private static int colDif =50, ligDif=324,col=100, lig=46;
+
+    private fr.ul.cassebrique.Models.brick.Brick wall[][];
 
     private static final Brick wallInit[][]= {
-            {Brick.Bleue, Brick.Bleue, Brick.Vide,  Brick.VerteAbimee, Brick.Vide, Brick.Bleue, Brick.Vide, Brick.Verte,  Brick.Verte, Brick.Bleue},
-            {Brick.Bleue, Brick.Bleue, Brick.VerteAbimee,  Brick.VerteAbimee, Brick.Vide, Brick.Bleue, Brick.Bleue, Brick.Verte,  Brick.Verte, Brick.Bleue},
-            {Brick.Bleue, Brick.Bleue, Brick.VerteAbimee,  Brick.VerteAbimee, Brick.Vide, Brick.Bleue, Brick.Bleue, Brick.Verte,  Brick.Verte, Brick.Bleue},
-            {Brick.Bleue, Brick.Bleue, Brick.VerteAbimee,  Brick.VerteAbimee, Brick.Vide, Brick.Bleue, Brick.Bleue, Brick.Verte,  Brick.Verte, Brick.Bleue},
-            {Brick.Bleue, Brick.Bleue, Brick.VerteAbimee,  Brick.VerteAbimee, Brick.Vide, Brick.Bleue, Brick.Bleue, Brick.Verte,  Brick.Verte, Brick.Bleue}
+            {new BlueBrick((colDif+(col*0)), (ligDif+lig*(5-0))), new BlueBrick((colDif+(col*1)), (ligDif+lig*(5-0))), new EmptyBrick((colDif+(col*2)), (ligDif+lig*(5-0))),  new GreenBrick((colDif+(col*3)), (ligDif+lig*(5-0)), true), new EmptyBrick((colDif+(col*4)), (ligDif+lig*(5-0))), new BlueBrick((colDif+(col*5)), (ligDif+lig*(5-0))), new EmptyBrick((colDif+(col*6)), (ligDif+lig*(5-0))), new GreenBrick((colDif+(col*7)), (ligDif+lig*(5-0))),  new GreenBrick((colDif+(col*8)), (ligDif+lig*(5-0))), new BlueBrick((colDif+(col*9)), (ligDif+lig*(5-0)))},
+            {new BlueBrick((colDif+(col*0)), (ligDif+lig*(5-1))), new BlueBrick((colDif+(col*1)), (ligDif+lig*(5-1))), new GreenBrick((colDif+(col*2)), (ligDif+lig*(5-1)), true),  new GreenBrick((colDif+(col*3)), (ligDif+lig*(5-1)), true), new EmptyBrick((colDif+(col*4)), (ligDif+lig*(5-1))), new BlueBrick((colDif+(col*5)), (ligDif+lig*(5-1))), new BlueBrick((colDif+(col*6)), (ligDif+lig*(5-1))), new GreenBrick((colDif+(col*7)), (ligDif+lig*(5-1))),  new GreenBrick((colDif+(col*8)), (ligDif+lig*(5-1))), new BlueBrick((colDif+(col*9)), (ligDif+lig*(5-1)))},
+            {new BlueBrick((colDif+(col*0)), (ligDif+lig*(5-2))), new BlueBrick((colDif+(col*1)), (ligDif+lig*(5-2))), new GreenBrick((colDif+(col*2)), (ligDif+lig*(5-2)), true),  new GreenBrick((colDif+(col*3)), (ligDif+lig*(5-2)), true), new BlueBrick((colDif+(col*4)), (ligDif+lig*(5-2))), new BlueBrick((colDif+(col*5)), (ligDif+lig*(5-2))), new BlueBrick((colDif+(col*6)), (ligDif+lig*(5-2))), new GreenBrick((colDif+(col*7)), (ligDif+lig*(5-2))),  new GreenBrick((colDif+(col*8)), (ligDif+lig*(5-2))), new BlueBrick((colDif+(col*9)), (ligDif+lig*(5-2)))},
+            {new BlueBrick((colDif+(col*0)), (ligDif+lig*(5-3))), new BlueBrick((colDif+(col*1)), (ligDif+lig*(5-3))), new GreenBrick((colDif+(col*2)), (ligDif+lig*(5-3)), true),  new GreenBrick((colDif+(col*3)), (ligDif+lig*(5-3)), true), new EmptyBrick((colDif+(col*4)), (ligDif+lig*(5-3))), new BlueBrick((colDif+(col*5)), (ligDif+lig*(5-3))), new BlueBrick((colDif+(col*6)), (ligDif+lig*(5-3))), new GreenBrick((colDif+(col*7)), (ligDif+lig*(5-3))),  new GreenBrick((colDif+(col*8)), (ligDif+lig*(5-3))), new BlueBrick((colDif+(col*9)), (ligDif+lig*(5-3)))},
+            {new BlueBrick((colDif+(col*0)), (ligDif+lig*(5-4))), new BlueBrick((colDif+(col*1)), (ligDif+lig*(5-4))), new GreenBrick((colDif+(col*2)), (ligDif+lig*(5-4)), true),  new GreenBrick((colDif+(col*3)), (ligDif+lig*(5-4)), true), new EmptyBrick((colDif+(col*4)), (ligDif+lig*(5-4))), new BlueBrick((colDif+(col*5)), (ligDif+lig*(5-4))), new BlueBrick((colDif+(col*6)), (ligDif+lig*(5-4))), new GreenBrick((colDif+(col*7)), (ligDif+lig*(5-4))),  new GreenBrick((colDif+(col*8)), (ligDif+lig*(5-4))), new BlueBrick((colDif+(col*9)), (ligDif+lig*(5-4)))}
     };
 
     private void setBricks(Boolean random){
         if (!random){
             wall = wallInit;
+            for (int i=0; i< nbL;i++)
+                for (int j=0; j<nbC;j++) {
+                wall[i][j].addBody(gw);
+                }
         } else {
 
         }
 
     }
 
-    public Wall(){
+    public Wall(GameWorld gaw){
+        this.gw = gaw;
         this.nbL = wallInit.length;
         this.nbC = wallInit[0].length;
         this.wall = new Brick[this.nbL][this.nbC];
@@ -34,11 +47,9 @@ public class Wall {
     }
 
     public void draw(SpriteBatch sb){
-        int colDif =50, ligDif=324,col=100, lig=46;
         for (int i=0; i< nbL;i++)
             for (int j=0; j<nbC;j++) {
-                if (wall[i][j].getTex()!=null)
-                sb.draw(wall[i][j].getTex(),  (colDif+(col*j)), (ligDif+lig*(nbL-i)));
+                wall[i][j].draw(sb);
             }
     }
 

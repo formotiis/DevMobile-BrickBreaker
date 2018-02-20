@@ -18,6 +18,9 @@ public class Background {
         BodyDef bd = new BodyDef();
         bd.type = BodyDef.BodyType.StaticBody;
         FixtureDef fd = new FixtureDef();
+        fd.density = 1f;
+        fd.restitution = 1f;
+        fd.friction = 0f;
         ChainShape cs = new ChainShape();
         float[] tab = { bSize*gw.getPixelsToMeters(), 0,
                 bSize*gw.getPixelsToMeters(), (bg.getHeight()-bSize)*gw.getPixelsToMeters(),

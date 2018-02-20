@@ -29,8 +29,8 @@ public class GameWorld {
         this.bg = new Background(this);
         this.racket = new Racket(this);
         this.gameState = new GameState(this);
-        this.wall = new Wall();
 
+        this.wall = new Wall(this);
         this.balls = new ArrayList<Ball>();
         this.createBalls();
     }
@@ -53,7 +53,7 @@ public class GameWorld {
                     i*(TextureFactory.getTexBall().getHeight()+10)+10));
         }
         Random r = new Random();
-        this.balls.get(0).setSpeed(-200, 200);
+        this.balls.get(0).setSpeed(-200+r.nextFloat()* 400, 200);
     }
 
     public Racket getRacket() {
