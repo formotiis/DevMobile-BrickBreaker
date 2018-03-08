@@ -2,6 +2,7 @@ package fr.ul.cassebrique.Models;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import fr.ul.cassebrique.Models.brick.BlueBrick;
 import fr.ul.cassebrique.Models.brick.Brick;
 import fr.ul.cassebrique.Models.brick.EmptyBrick;

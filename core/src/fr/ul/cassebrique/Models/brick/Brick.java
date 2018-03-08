@@ -1,13 +1,12 @@
 package fr.ul.cassebrique.Models.brick;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ChainShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.*;
 import fr.ul.cassebrique.DataFactories.TextureFactory;
 import fr.ul.cassebrique.Models.GameWorld;
+
+import static fr.ul.cassebrique.DataFactories.TextureFactory.getTexBlueBrick;
 
 public abstract class Brick {
 
@@ -35,41 +34,52 @@ public abstract class Brick {
     }
 
     protected int x() {
-        if (bodied)
+        if (bodied) {
             return (int) (this.body.getPosition().x * mToP);
+        }
         return x;
     }
 
     protected int y() {
-        if (bodied)
+        if (bodied) {
             return (int) (this.body.getPosition().y * mToP);
+        }
         return y;
     }
 
     public abstract void draw(SpriteBatch sb);
 
-    public void addBody(GameWorld gw){
+    public void addBody(GameWorld gw) {
         this.mToP = gw.getMetersToPixels();
         BodyDef bd = new BodyDef();
+        bd.position.set(x * gw.getPixelsToMeters(), y * gw.getPixelsToMeters());
         bd.type = BodyDef.BodyType.StaticBody;
-        int lig = 46, col=50;
+        int lig = TextureFactory.getTexBlueBrick().getWidth(), col = TextureFactory.getTexBlueBrick().getHeight();
         FixtureDef fd = new FixtureDef();
-        ChainShape cs = new ChainShape();
         fd.density = 1f;
         fd.restitution = 1f;
         fd.friction = 0f;
-        float[] tab = {
+        ChainShape cs = new ChainShape();
+        float pToM = gw.getPixelsToMeters();
+        /*float[] tab = {
                 x*gw.getPixelsToMeters(), y*gw.getPixelsToMeters(),
                 (x+lig)*gw.getPixelsToMeters(), y*gw.getPixelsToMeters(),
                 (x+lig)*gw.getPixelsToMeters(), (y+col)*gw.getPixelsToMeters(),
                 x*gw.getPixelsToMeters(), (y+col)*gw.getPixelsToMeters(),
                 x*gw.getPixelsToMeters(), y*gw.getPixelsToMeters()
+        };*/
+        float[] tab = {0, 0,
+                lig*pToM, 0,
+                lig*pToM, col*pToM,
+                0, col*pToM,
+                0, 0
         };
+
         cs.createChain(tab);
         fd.shape = cs;
         body = gw.getWorld().createBody(bd);
         body.createFixture(fd);
-        body.setTransform(x*gw.getPixelsToMeters(), y*gw.getPixelsToMeters(),0f);
+        //body.setTransform(x*gw.getPixelsToMeters(), y*gw.getPixelsToMeters(),0f);
         bodied = true;
     }
 }

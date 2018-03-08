@@ -18,10 +18,14 @@ public class Racket {
     private Body body;
     private Body lBall;
     private Body rBall;
+    private float ptm;
+    private float mtp;
 
 
     public Racket(GameWorld gw) {
         this.gw = gw;
+        this.ptm =gw.getPixelsToMeters();
+        this.mtp = gw.getMetersToPixels();
         this.pos = new int[2];
         this.pos[1] = 100;
         this.minWidth = 50;//tobeupdated
@@ -38,53 +42,64 @@ public class Racket {
         fd.friction = 0f;
 
         fd.shape = new CircleShape();
-        fd.shape.setRadius(10*gw.getPixelsToMeters());
+        fd.shape.setRadius(10*ptm);
         lBall = gw.getWorld().createBody(bd);
         lBall.createFixture(fd);
-        lBall.setTransform(pos[0]*gw.getPixelsToMeters(), pos[1]*gw.getPixelsToMeters(), 0f);
+        lBall.setTransform((pos[0]- dimb/2)*ptm, (pos[1]+dimb/2)*ptm, 0f);
 
         ChainShape cs = new ChainShape();
         float[] tab = {
-                (pos[0]+dimb)*gw.getPixelsToMeters(), (pos[1]+dimb)*gw.getPixelsToMeters(),
-                (pos[0]+dimb+tex.getHeight())*gw.getPixelsToMeters(), (pos[1]+dimb)*gw.getPixelsToMeters(),
-                (pos[0]+dimb+tex.getHeight())*gw.getPixelsToMeters(), (pos[1]+tex.getWidth()-2*dimb)*gw.getPixelsToMeters(),
-                (pos[0]+dimb)*gw.getPixelsToMeters(), (pos[1]+tex.getWidth()-2*dimb)*gw.getPixelsToMeters()
+
+                0, 0,
+
+                0, (tex.getHeight())*ptm,
+
+                (tex.getWidth()-2*dimb)*ptm, tex.getHeight()*ptm,
+
+                (tex.getWidth()-2*dimb)*ptm, 0,
+
+                0,0
+
         };
         cs.createChain(tab);
+
         fd.shape = cs;
         body = gw.getWorld().createBody(bd);
+        body.setTransform(pos[0]*ptm, pos[1]*ptm,0f);
         body.createFixture(fd);
-        body.setTransform(pos[0]*gw.getPixelsToMeters(), pos[1]*gw.getPixelsToMeters(),0f);
+        //body.setTransform(pos[0]*ptm, pos[1]*ptm,0f);
 
         fd.shape = new CircleShape();
-        fd.shape.setRadius(10*gw.getPixelsToMeters());
+        fd.shape.setRadius(10*ptm);
         rBall = gw.getWorld().createBody(bd);
         rBall.createFixture(fd);
-        rBall.setTransform((pos[0]+tex.getWidth()-2*dimb)*gw.getPixelsToMeters(), (pos[1]+tex.getWidth()-2*dimb)*gw.getPixelsToMeters(), 0f);
+        rBall.setTransform(((pos[0]+tex.getWidth()-(2*dimb))+dimb/2)*ptm, (pos[1]+dimb/2)*ptm, 0f);
 
     }
 
     public void draw(SpriteBatch sb){
         sb.draw(tex,
-                lBall.getPosition().x*gw.getMetersToPixels(),
-                lBall.getPosition().y*gw.getMetersToPixels());
+                lBall.getPosition().x*mtp-8,
+                lBall.getPosition().y*mtp-12);
     }
 
     public void move(int y){
-        lBall.setTransform(lBall.getPosition().x+(y*gw.getPixelsToMeters()), lBall.getPosition().y, 0f);
-        body.setTransform(body.getPosition().x+(y*gw.getPixelsToMeters()), body.getPosition().y, 0f);
-        rBall.setTransform(rBall.getPosition().x+(y*gw.getPixelsToMeters()), rBall.getPosition().y, 0f);
+        lBall.setTransform(lBall.getPosition().x+(y*ptm), lBall.getPosition().y, 0f);
+        body.setTransform(body.getPosition().x+(y*ptm), body.getPosition().y, 0f);
+        rBall.setTransform(rBall.getPosition().x+(y*ptm), rBall.getPosition().y, 0f);
     }
 
     public boolean isMovePossible(int y){
-        return (((rBall.getPosition().x)*gw.getMetersToPixels()+y<maxWidth+oWidth) &&
-                ((rBall.getPosition().x)*gw.getMetersToPixels()+y>minWidth));
+        System.out.println("Rball position "+ (rBall.getPosition().x*mtp) + " < "+ (maxWidth));
+        //System.out.println("Lball position "+ (lBall.getPosition().x*mtp) + " > "+ (minWidth));
+        return (((rBall.getPosition().x)*mtp+10/2 +y < maxWidth) &&
+                ((lBall.getPosition().x)*mtp-10/2+y>minWidth));
     }
 
     public void moveRelative(int y){
-        if ((((rBall.getPosition().x)*gw.getMetersToPixels()+oWidth/2)-5<y)&&(y<((rBall.getPosition().x)*gw.getMetersToPixels()+oWidth/2)+5)){
+        if ((((rBall.getPosition().x)*mtp+oWidth/2)-5<y)&&(y<((rBall.getPosition().x)*mtp+oWidth/2)+5)){
 
-        } else if (y>(rBall.getPosition().x)*gw.getMetersToPixels()+oWidth/2){
+        } else if (y>(rBall.getPosition().x)*mtp+oWidth/2){
             if (isMovePossible(10))
                 move(10);
         }else {

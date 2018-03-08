@@ -2,6 +2,7 @@ package fr.ul.cassebrique.Models.brick;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import fr.ul.cassebrique.DataFactories.TextureFactory;
 
 public class GreenBrick extends Brick{
@@ -33,4 +34,5 @@ public class GreenBrick extends Brick{
         else if (getHitsLeft()==2)
             sb.draw(tex, x(),y());
     }
+
 }

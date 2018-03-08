@@ -1,8 +1,11 @@
 package fr.ul.cassebrique.Models;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.ul.cassebrique.DataFactories.TextureFactory;
 import fr.ul.cassebrique.Views.GameScreen;
@@ -22,9 +25,15 @@ public class GameWorld {
     private World world;
     private final static float METERS_TO_PIXELS = 250f;
     private final static float PIXELS_TO_METERS = (1/METERS_TO_PIXELS);
+    private Box2DDebugRenderer debug;
+    private OrthographicCamera cam;
 
     public GameWorld(GameScreen g){
         this.gs = g;
+        cam = new OrthographicCamera(1150*PIXELS_TO_METERS, 700*PIXELS_TO_METERS);
+        cam.position.set(1150*PIXELS_TO_METERS/2, 700*PIXELS_TO_METERS/2, 0);
+        cam.update();
+        debug = new Box2DDebugRenderer();
         this.world = new World(new Vector2(0f,0f), false);
         this.bg = new Background(this);
         this.racket = new Racket(this);
@@ -36,6 +45,7 @@ public class GameWorld {
     }
 
     public void draw(SpriteBatch s){
+        //debug.render(world, cam.combined);
         world.step(Gdx.graphics.getDeltaTime(),6,2);
         bg.draw(s);
         racket.draw(s);
@@ -77,4 +87,5 @@ public class GameWorld {
     public World getWorld() {
         return world;
     }
+
 }

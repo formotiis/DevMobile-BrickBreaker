@@ -25,7 +25,7 @@ public class Background {
         float[] tab = { bSize*gw.getPixelsToMeters(), 0,
                 bSize*gw.getPixelsToMeters(), (bg.getHeight()-bSize)*gw.getPixelsToMeters(),
                 (bg.getWidth()-(bSize*2))*gw.getPixelsToMeters(), (bg.getHeight()-bSize)*gw.getPixelsToMeters(),
-                (bg.getHeight()-(bSize*2))*gw.getPixelsToMeters(), 0};
+                (bg.getWidth()-(bSize*2))*gw.getPixelsToMeters(), 0};
         cs.createChain(tab);
         fd.shape = cs;
         body = gw.getWorld().createBody(bd);

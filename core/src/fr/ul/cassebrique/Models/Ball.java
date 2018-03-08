@@ -37,7 +37,7 @@ public class Ball {
     }
 
     public void draw(SpriteBatch sb){
-        sb.draw(tex, (body.getPosition().x*gw.getMetersToPixels())-12, (body.getPosition().y*gw.getMetersToPixels())-12);
+        sb.draw(tex, (body.getPosition().x*gw.getMetersToPixels()-12), (body.getPosition().y*gw.getMetersToPixels()-12));
     }
 
     public void setSpeed(float x, float y){

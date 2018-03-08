@@ -1,6 +1,7 @@
 package fr.ul.cassebrique.Models.brick;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import fr.ul.cassebrique.Models.GameWorld;
 
 public class EmptyBrick extends Brick{
