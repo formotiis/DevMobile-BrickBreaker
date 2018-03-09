@@ -30,6 +30,7 @@ public class Background {
         fd.shape = cs;
         body = gw.getWorld().createBody(bd);
         body.createFixture(fd);
+        body.setUserData(this);
     }
 
     public void draw(SpriteBatch sb){

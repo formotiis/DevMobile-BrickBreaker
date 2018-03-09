@@ -32,6 +32,8 @@ public class Ball {
         fd.friction = 0f;
         body = gw.getWorld().createBody(bd);
         body.createFixture(fd);
+
+        body.setUserData(this);
         body.setTransform(x*gw.getPixelsToMeters(), y*gw.getPixelsToMeters(), 0f);
         //body.getPosition();
     }
@@ -40,8 +42,16 @@ public class Ball {
         sb.draw(tex, (body.getPosition().x*gw.getMetersToPixels()-12), (body.getPosition().y*gw.getMetersToPixels()-12));
     }
 
-    public void setSpeed(float x, float y){
-        body.setLinearVelocity(x*gw.getPixelsToMeters(),y*gw.getPixelsToMeters());
+    public void setSpeed(float x, float y) {
+        body.setLinearVelocity(x * gw.getPixelsToMeters(), y * gw.getPixelsToMeters());
+    }
+
+    public float getSpeedX(){
+        return body.getLinearVelocity().x;
+    }
+
+    public float getSpeedY(){
+        return body.getLinearVelocity().y;
     }
 
 }

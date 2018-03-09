@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import fr.ul.cassebrique.Controls.CollisionController;
 import fr.ul.cassebrique.DataFactories.TextureFactory;
 import fr.ul.cassebrique.Views.GameScreen;
 
@@ -42,6 +43,8 @@ public class GameWorld {
         this.wall = new Wall(this);
         this.balls = new ArrayList<Ball>();
         this.createBalls();
+        world.setContactListener(new CollisionController());
+        world.setVelocityThreshold(0.1f);
     }
 
     public void draw(SpriteBatch s){
@@ -59,8 +62,8 @@ public class GameWorld {
         this.balls.add(new Ball(this, (TextureFactory.getTexBack().getWidth()-2*50)/2-12,120));
         for (int i=0; i<gameState.getNbBalls()-1;i++){
             this.balls.add(new Ball (this,
-                    Gdx.graphics.getBackBufferWidth()-50+(TextureFactory.getTexBall().getWidth())/2,
-                    i*(TextureFactory.getTexBall().getHeight()+10)+10));
+                    Gdx.graphics.getBackBufferWidth()-50+(TextureFactory.getTexBall().getWidth())/2+12,
+                    i*(TextureFactory.getTexBall().getHeight()+10)+22));
         }
         Random r = new Random();
         this.balls.get(0).setSpeed(-200+r.nextFloat()* 400, 200);

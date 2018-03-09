@@ -46,7 +46,7 @@ public class Racket {
         lBall = gw.getWorld().createBody(bd);
         lBall.createFixture(fd);
         lBall.setTransform((pos[0]- dimb/2)*ptm, (pos[1]+dimb/2)*ptm, 0f);
-
+        lBall.setUserData(this);
         ChainShape cs = new ChainShape();
         float[] tab = {
 
@@ -67,6 +67,7 @@ public class Racket {
         body = gw.getWorld().createBody(bd);
         body.setTransform(pos[0]*ptm, pos[1]*ptm,0f);
         body.createFixture(fd);
+        body.setUserData(this);
         //body.setTransform(pos[0]*ptm, pos[1]*ptm,0f);
 
         fd.shape = new CircleShape();
@@ -74,7 +75,7 @@ public class Racket {
         rBall = gw.getWorld().createBody(bd);
         rBall.createFixture(fd);
         rBall.setTransform(((pos[0]+tex.getWidth()-(2*dimb))+dimb/2)*ptm, (pos[1]+dimb/2)*ptm, 0f);
-
+        rBall.setUserData(this);
     }
 
     public void draw(SpriteBatch sb){
@@ -90,16 +91,16 @@ public class Racket {
     }
 
     public boolean isMovePossible(int y){
-        System.out.println("Rball position "+ (rBall.getPosition().x*mtp) + " < "+ (maxWidth));
+        //System.out.println("Rball position "+ (rBall.getPosition().x*mtp) + " < "+ (maxWidth));
         //System.out.println("Lball position "+ (lBall.getPosition().x*mtp) + " > "+ (minWidth));
         return (((rBall.getPosition().x)*mtp+10/2 +y < maxWidth) &&
                 ((lBall.getPosition().x)*mtp-10/2+y>minWidth));
     }
 
     public void moveRelative(int y){
-        if ((((rBall.getPosition().x)*mtp+oWidth/2)-5<y)&&(y<((rBall.getPosition().x)*mtp+oWidth/2)+5)){
+        if ((((rBall.getPosition().x)*mtp-oWidth/2)-5<y)&&(y<((rBall.getPosition().x)*mtp-oWidth/2)+5)){
 
-        } else if (y>(rBall.getPosition().x)*mtp+oWidth/2){
+        } else if (y>(rBall.getPosition().x)*mtp - oWidth/2){
             if (isMovePossible(10))
                 move(10);
         }else {
