@@ -20,18 +20,22 @@ public class CollisionController implements ContactListener{
         Body B = contact.getFixtureB().getBody();
 
         if (A.getUserData().getClass().equals(Ball.class)) {
-            Ball ball =(Ball) A.getUserData();
+            Ball ball = (Ball) A.getUserData();
 
             if (B.getUserData().getClass().equals(Background.class)) {
-                //TODO: idk
+                ball.setSpeedFloat(normalise(ball.getSpeedX(), normal.x),
+                        normalise(ball.getSpeedY(), normal.y));
             }
 
             if (B.getUserData().getClass().equals(Racket.class)) {
-                //TODO: things.
+                ball.setSpeedFloat(normalise(ball.getSpeedX(), normal.x),
+                        normalise(ball.getSpeedY(), normal.y));
             }
 
             if (Brick.class.isAssignableFrom(B.getUserData().getClass())) {
-                ball.setSpeed(normalise(ball.getSpeedX(), normal.x),
+                Brick b = (Brick) B.getUserData();
+                b.wasHit();
+                ball.setSpeedFloat(normalise(ball.getSpeedX(), normal.x),
                         normalise(ball.getSpeedY(), normal.y));
             }
         }
@@ -41,16 +45,18 @@ public class CollisionController implements ContactListener{
             Ball ball = (Ball) B.getUserData();
 
             if (A.getUserData().getClass().equals(Background.class)) {
-                //TODO: things.
+                ball.setSpeedFloat(normalise(ball.getSpeedX(), normal.x),
+                        normalise(ball.getSpeedY(), normal.y));
             }
 
             if (A.getUserData().getClass().equals(Racket.class)) {
-                //TODO: things.
+                ball.setSpeedFloat(normalise(ball.getSpeedX(), normal.x),
+                        normalise(ball.getSpeedY(), normal.y));
             }
-            System.out.println(Brick.class.isAssignableFrom(A.getUserData().getClass()));
             if (Brick.class.isAssignableFrom(A.getUserData().getClass())) {
-
-                ball.setSpeed(normalise(ball.getSpeedX(), normal.x),
+                Brick b = (Brick) A.getUserData();
+                b.wasHit();
+                ball.setSpeedFloat(normalise(ball.getSpeedX(), normal.x),
                         normalise(ball.getSpeedY(), normal.y));
             }
         }
@@ -79,6 +85,6 @@ public class CollisionController implements ContactListener{
             r = -x*r;
         }
 
-        return 200*r;
+        return r;
     }
 }

@@ -26,10 +26,10 @@ public abstract class Brick {
 
     protected void hit() {
         if (hitsLeft > 0)
-            hitsLeft = hitsLeft - 1;
+            hitsLeft -= 1;
     }
 
-    protected int getHitsLeft() {
+    public int getHitsLeft() {
         return hitsLeft;
     }
 
@@ -82,5 +82,18 @@ public abstract class Brick {
         body.setUserData(this);
         //body.setTransform(x*gw.getPixelsToMeters(), y*gw.getPixelsToMeters(),0f);
         bodied = true;
+    }
+
+    public void remBody(World wd){
+        if (bodied == true) {
+            wd.destroyBody(body);
+            body.setUserData(null);
+            body = null;
+            bodied = false;
+        }
+    }
+
+    public void wasHit(){
+        this.hit();
     }
 }

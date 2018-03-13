@@ -43,7 +43,15 @@ public class Ball {
     }
 
     public void setSpeed(float x, float y) {
+        System.out.println("Before x:"+body.getLinearVelocity().x+" y:"+body.getLinearVelocity().y);
         body.setLinearVelocity(x * gw.getPixelsToMeters(), y * gw.getPixelsToMeters());
+        System.out.println("After x:"+body.getLinearVelocity().x+" y:"+body.getLinearVelocity().y);
+    }
+
+    public void setSpeedFloat(float x, float y) {
+        System.out.println("Beforef x:"+body.getLinearVelocity().x+" y:"+body.getLinearVelocity().y);
+        body.setLinearVelocity(x , y );
+        System.out.println("Afterf x:"+body.getLinearVelocity().x+" y:"+body.getLinearVelocity().y);
     }
 
     public float getSpeedX(){

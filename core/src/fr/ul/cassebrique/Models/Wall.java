@@ -8,6 +8,8 @@ import fr.ul.cassebrique.Models.brick.Brick;
 import fr.ul.cassebrique.Models.brick.EmptyBrick;
 import fr.ul.cassebrique.Models.brick.GreenBrick;
 
+import java.util.ArrayList;
+
 public class Wall {
 
     private int nbL; //nombre de lignes
@@ -45,6 +47,25 @@ public class Wall {
         this.nbC = wallInit[0].length;
         this.wall = new Brick[this.nbL][this.nbC];
         setBricks(false);
+    }
+
+    public ArrayList<Brick> checkBricks(){
+        ArrayList<Brick> al = new ArrayList<Brick>();
+        for (int i=0; i< nbL;i++)
+            for (int j=0; j<nbC;j++) {
+                if (!(wall[i][j].getClass().equals(EmptyBrick.class))){
+                    if (wall[i][j].getHitsLeft()==0) {
+                        al.add(wall[i][j]);
+                    }
+                }
+            }
+        return al;
+    }
+
+    public void updateBricks(ArrayList<Brick> a){
+        for (int i =0; i<a.size();i++){
+            a.get(i).remBody(gw.getWorld());
+        }
     }
 
     public void draw(SpriteBatch sb){

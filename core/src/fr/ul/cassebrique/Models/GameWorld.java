@@ -52,6 +52,7 @@ public class GameWorld {
         world.step(Gdx.graphics.getDeltaTime(),6,2);
         bg.draw(s);
         racket.draw(s);
+        wall.updateBricks(wall.checkBricks());
         wall.draw(s);
         for (Ball b:this.balls ) {
             b.draw(s);
