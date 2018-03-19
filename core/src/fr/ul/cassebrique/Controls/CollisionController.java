@@ -15,7 +15,6 @@ public class CollisionController implements ContactListener{
     @Override
     public void beginContact(Contact contact) {
         Vector2 normal= contact.getWorldManifold().getNormal();
-        //System.out.println("normal.x:"+normal.x+" normal.y:"+normal.y);
         Body A = contact.getFixtureA().getBody();
         Body B = contact.getFixtureB().getBody();
 
@@ -80,11 +79,9 @@ public class CollisionController implements ContactListener{
 
     private float normalise(float x, float normal){
         float r = x;
-
         if (normal == -1f  || normal == 1f){
-            r = -x*r;
+            r = -r;
         }
-
         return r;
     }
 }

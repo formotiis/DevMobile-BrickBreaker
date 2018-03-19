@@ -54,6 +54,10 @@ public class GameWorld {
         racket.draw(s);
         wall.updateBricks(wall.checkBricks());
         wall.draw(s);
+        if (balls.get(0).ballOut()){
+            //insert state affichage+ wait
+            removeBall();
+        }
         for (Ball b:this.balls ) {
             b.draw(s);
         }
@@ -88,6 +92,19 @@ public class GameWorld {
         return PIXELS_TO_METERS;
     }
 
+    public void removeBall(){
+        balls.get(0).remBody(world);
+        balls.remove(0);
+    }
+
+    public void newBall(){
+        balls.get(0).place((TextureFactory.getTexBack().getWidth()-2*50)/2-12,120);
+        for (int i=1; i<gameState.getNbBalls();i++){
+            this.balls.get(i).place(
+                    Gdx.graphics.getBackBufferWidth()-50+(TextureFactory.getTexBall().getWidth())/2+12,
+                    i-1*(TextureFactory.getTexBall().getHeight()+10)+22);
+        }
+    }
     public World getWorld() {
         return world;
     }
