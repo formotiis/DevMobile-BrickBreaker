@@ -36,5 +36,11 @@ public class GameState {
     public int getNbBalls() {
         return nbBalls;
     }
+
+    public void ballLoss(){
+        this.state = State.BallLoss;
+        nbBalls--;
+    }
+
 }
 
