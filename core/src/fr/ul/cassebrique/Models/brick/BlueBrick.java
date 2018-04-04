@@ -20,4 +20,10 @@ public class BlueBrick extends Brick {
             sb.draw(tex, x(), y());
     }
 
+    @Override
+    protected int maxHits() {
+        return 1;
+    }
+
+
 }

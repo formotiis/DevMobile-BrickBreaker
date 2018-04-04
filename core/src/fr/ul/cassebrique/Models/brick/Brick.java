@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.*;
 import fr.ul.cassebrique.DataFactories.TextureFactory;
 import fr.ul.cassebrique.Models.GameWorld;
+import fr.ul.cassebrique.Models.Wall;
 
 import static fr.ul.cassebrique.DataFactories.TextureFactory.getTexBlueBrick;
 
@@ -84,15 +85,21 @@ public abstract class Brick {
         bodied = true;
     }
 
-    public void remBody(World wd){
+    public void remBody(World wd, Wall wa){
         if (bodied == true) {
             wd.destroyBody(body);
             body.setUserData(null);
             body = null;
             bodied = false;
+            wa.brickRemoved();
         }
     }
 
+    public void reset(){
+        this.hitsLeft = maxHits();
+    }
+
+    protected abstract int maxHits();
     public void wasHit(){
         this.hit();
     }

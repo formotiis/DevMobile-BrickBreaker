@@ -6,15 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fr.ul.cassebrique.DataFactories.TextureFactory;
 
-enum State{
-    Running,
-    BallLoss,
-    GameOver,
-    Won,
-    Pause,
-    Quit
-}
-
 public class GameState {
 
     private State state;
@@ -37,9 +28,41 @@ public class GameState {
         return nbBalls;
     }
 
+    public boolean isRunning(){
+        return state == State.Running;
+    }
+
     public void ballLoss(){
-        this.state = State.BallLoss;
         nbBalls--;
+    }
+
+    public void ballWon(){
+        nbBalls++;
+    }
+
+    public void run(){
+        this.state = State.Running;
+    }
+
+    public void reset(){
+        this.state = State.Running;
+        this.nbBalls = 3;
+    }
+
+    public void pause(){
+        this.state = State.Pause;
+    }
+
+    public boolean isPaused(){
+        return this.state==State.Pause;
+    }
+
+    public void resume(){
+        this.state = State.Running;
+    }
+
+    public void updateState(State s){
+        this.state =s;
     }
 
 }

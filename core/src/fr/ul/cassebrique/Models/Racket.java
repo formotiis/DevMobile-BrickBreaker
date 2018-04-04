@@ -20,6 +20,7 @@ public class Racket {
     private Body rBall;
     private float ptm;
     private float mtp;
+    private static int dimb = 20;
 
 
     public Racket(GameWorld gw) {
@@ -33,7 +34,7 @@ public class Racket {
         this.oWidth = 125;
         this.pos[0] = maxWidth/2-oWidth/2;
         this.tex = TextureFactory.getTexRacket();
-        int dimb = 20;
+
         BodyDef bd = new BodyDef();
         bd.type = BodyDef.BodyType.StaticBody;
         FixtureDef fd = new FixtureDef();
@@ -107,6 +108,24 @@ public class Racket {
             if (isMovePossible(-10))
                 move(-10);
         }
+    }
 
+    public boolean offMiddleCollision(Body b){
+        return (b.equals(rBall)||b.equals(lBall));
+    }
+
+    public float ratio(float y){
+
+        return Math.abs(3f*(y-(tex.getHeight()*ptm/2f)));
+    }
+
+
+    /**
+     * Casts repositionning on racket
+     */
+    public void reaper(){
+        lBall.setTransform((pos[0]- dimb/2)*ptm, (pos[1]+dimb/2)*ptm, 0f);
+        body.setTransform(pos[0]*ptm, pos[1]*ptm,0f);
+        rBall.setTransform(((pos[0]+tex.getWidth()-(2*dimb))+dimb/2)*ptm, (pos[1]+dimb/2)*ptm, 0f);
     }
 }

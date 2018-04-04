@@ -17,4 +17,9 @@ public class EmptyBrick extends Brick{
     @Override
     public void addBody(GameWorld gw) {
     }
+
+    @Override
+    protected int maxHits() {
+        return 0;
+    }
 }

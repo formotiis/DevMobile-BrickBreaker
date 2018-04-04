@@ -12,6 +12,7 @@ public class Background {
     private Body body;
     private GameWorld gw;
 
+
     public Background(GameWorld gaw) {
         this.gw = gaw;
         bg = TextureFactory.getTexBack();

@@ -49,27 +49,46 @@ public class GameWorld {
 
     public void draw(SpriteBatch s){
         //debug.render(world, cam.combined);
-        world.step(Gdx.graphics.getDeltaTime(),6,2);
+        if (gameState.isRunning())
+            world.step(Gdx.graphics.getDeltaTime(),6,2);
         bg.draw(s);
         racket.draw(s);
+
         wall.updateBricks(wall.checkBricks());
         wall.draw(s);
-        if (balls.get(0).ballOut()){
-            //insert state affichage+ wait
-            removeBall();
-        }
+
         for (Ball b:this.balls ) {
             b.draw(s);
         }
     }
 
+    public State whatState() {
+        if (balls.get(0).ballOut()) {
+
+            if (gameState.getNbBalls()<=1){
+                return State.GameOver;
+            } else
+                return State.BallLoss;
+        }
+        else if (wall.isWallEmpty()) {
+            return State.Won;
+        } else {
+            return gameState.getState();
+        }
+    }
+
     private void createBalls(){
         this.balls.add(new Ball(this, (TextureFactory.getTexBack().getWidth()-2*50)/2-12,120));
-        for (int i=0; i<gameState.getNbBalls()-1;i++){
+        for (int i=1; i<gameState.getNbBalls();i++){
             this.balls.add(new Ball (this,
-                    Gdx.graphics.getBackBufferWidth()-50+(TextureFactory.getTexBall().getWidth())/2+12,
+                    TextureFactory.getTexBack().getWidth()-50+(TextureFactory.getTexBall().getWidth())/2+12,
                     i*(TextureFactory.getTexBall().getHeight()+10)+22));
         }
+        Random r = new Random();
+        this.balls.get(0).setSpeed(-200+r.nextFloat()* 400, 200);
+    }
+
+    public void initBallVelocity(){
         Random r = new Random();
         this.balls.get(0).setSpeed(-200+r.nextFloat()* 400, 200);
     }
@@ -93,20 +112,68 @@ public class GameWorld {
     }
 
     public void removeBall(){
-        balls.get(0).remBody(world);
-        balls.remove(0);
+        balls.get(balls.size()-1).remBody(world);
+        balls.remove(balls.size()-1);
     }
 
-    public void newBall(){
-        balls.get(0).place((TextureFactory.getTexBack().getWidth()-2*50)/2-12,120);
-        for (int i=1; i<gameState.getNbBalls();i++){
-            this.balls.get(i).place(
-                    Gdx.graphics.getBackBufferWidth()-50+(TextureFactory.getTexBall().getWidth())/2+12,
-                    i-1*(TextureFactory.getTexBall().getHeight()+10)+22);
-        }
+    public void reapBall(){
+        balls.get(0).place((TextureFactory.getTexBack().getWidth()-2*50)/2-12,120+12);
     }
     public World getWorld() {
         return world;
     }
+
+    public void updateState(State s){
+        this.gameState.updateState(s);
+    }
+
+    private void addBall(){
+        gameState.ballWon();
+        for (int i = balls.size();i<gameState.getNbBalls();i++ )
+            this.balls.add(new Ball (this,
+                    TextureFactory.getTexBack().getWidth()-50+(TextureFactory.getTexBall().getWidth())/2+12,
+                i*(TextureFactory.getTexBall().getHeight()+10)+22));
+    }
+
+    public void restart(State s){
+        if (s.equals(State.BallLoss)){
+            racket.reaper();
+            gameState.ballLoss();
+            removeBall();
+            reapBall();
+            initBallVelocity();
+            gameState.run();
+            gs.scheduleDone();
+        } else if (s.equals(State.Won)){
+            racket.reaper();
+            wall.reset(true);
+
+            reapBall();addBall();
+            gameState.run();
+            initBallVelocity();
+            gs.scheduleDone();
+        } else if (s.equals(State.GameOver)){
+            racket.reaper();
+            removeBall();
+            wall.reset(false);
+            gameState.reset();
+            createBalls();
+            gameState.run();
+            initBallVelocity();
+            gs.scheduleDone();
+        }
+    }
+
+    public void pauseOrResume(){
+        if(gameState.isPaused()){
+            gameState.resume();
+        } else {
+            gameState.pause();
+        }
+    }
+    public boolean isRunning(){
+        return gameState.isRunning();
+    }
+
 
 }
