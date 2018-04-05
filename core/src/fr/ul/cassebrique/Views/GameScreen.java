@@ -41,10 +41,10 @@ public class GameScreen extends ScreenAdapter {
     private boolean scheduled;
 
     public GameScreen(){
-        camera = new OrthographicCamera();
+        camera = new OrthographicCamera(worldWidth,worldHeight);
 
-        FitViewport vp = new FitViewport(worldWidth,worldHeight,camera);
-        vp.apply();
+        //FitViewport vp = new FitViewport(worldWidth,worldHeight,camera);
+        //vp.apply();
         camera.position.set(worldWidth/2f, worldHeight /2f,0);
         camera.update();
         Gdx.input.setInputProcessor(new Listener(this));
@@ -67,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         super.render(delta);
+        sb.setProjectionMatrix(camera.combined);
         long time = System.nanoTime();
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -102,12 +103,10 @@ public class GameScreen extends ScreenAdapter {
         sb.end();
         time = System.nanoTime() -time;
         time = TimeUnit.MILLISECONDS.convert(time, TimeUnit.NANOSECONDS);
-        //System.out.println("time:"+time);
         try {
             if (!(time<0)) {
                 Thread.sleep(GameWorld.getTimeIter(time));
             }
-            //System.out.println("time:"+time);
         } catch (InterruptedException ex) {
             Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,7 +136,9 @@ public class GameScreen extends ScreenAdapter {
             }
             if (Gdx.input.isTouched()){
                 gw.getRacket().moveRelative(Gdx.input.getX());
-            }
+            } //else {
+                //gw.getRacket().moveRelative((int)Gdx.input.getAccelerometerY());
+            //}
         }
 
         if (gw.whatState() == State.BallLoss){

@@ -18,8 +18,8 @@ public class Wall {
     private GameWorld gw;
     private Random r;
 
-    private static int colDif =50, ligDif=324,col=100, lig=46;
-    private int amBricks;
+    private static int colDif =50, ligDif=324,col=100, lig=46, maxBlue=21, maxGreen=21, maxBGreen=6, maxEmpty=6;
+    private int amBricks, localBlue, localGreen, localBGreen, localEmpty;
 
     private fr.ul.cassebrique.Models.brick.Brick wall[][];
 
@@ -39,6 +39,10 @@ public class Wall {
                 wall[i][j].addBody(gw);
                 }
         } else {
+            localBGreen=0;
+            localBlue=0;
+            localGreen=0;
+            localEmpty=0;
             for (int i=0; i< nbL;i++)
                 for (int j=0; j<nbC;j++) {
                     wall[i][j] = randomBrick((colDif+(col*j)),(ligDif+lig*(5-i)));
@@ -51,17 +55,31 @@ public class Wall {
 
     }
 
-    public Brick randomBrick(int x, int y){
-        int t = r.nextInt(1000);
-        if (t<100){
-            return new EmptyBrick(x, y);
-        } else if(t<500){
-            return new BlueBrick(x,y);
-        } else if (t<900){
-            return new GreenBrick(x,y);
-        } else return new GreenBrick(x,y,true);
+    public Brick randomBrick(int x, int y) {
+        int t = r.nextInt(10000);
+        if (t < 1000) {
+            if (localEmpty<=maxEmpty) {
+                localEmpty += 1;
+                return new EmptyBrick(x, y);
+            }
+        } else if (t < 5000) {
+            if (localBlue<=maxBlue) {
+                localBlue+=1;
+                return new BlueBrick(x, y);
+            }
+        } else if (t < 9000) {
+            if (localBGreen<=maxBGreen) {
+                localGreen+=1;
+                return new GreenBrick(x, y);
+            }
+        } else {
+            if (localBGreen<=maxBGreen){
+                localBGreen=+1;
+                return new GreenBrick(x, y, true);
+            }
+        }
+        return randomBrick(x,y);
     }
-
     public Wall(GameWorld gaw){
         this.gw = gaw;
         this.r = new Random();
